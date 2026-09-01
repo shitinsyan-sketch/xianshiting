@@ -1,0 +1,1378 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jasmine 作品集</title>
+<style>
+:root{
+  --sand:#fcffdd;
+  --lime:#c9e9ff;
+  --sky:#fcffdd;
+  --steel:#c9e9ff;
+  --pink:#f8dee3;
+  --ink:#3d4d59;
+  --muted:#71838e;
+  --paper:#fcffdd;
+  --line:#e4edf0;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:"Hiragino Sans GB","PingFang SC","Microsoft YaHei",sans-serif;
+  color:var(--ink);
+  background:var(--paper);
+  line-height:1.55;
+  overflow-x:hidden;
+}
+a{color:inherit}
+button{font:inherit;cursor:pointer}
+h1,h2,h3,.brand{
+  font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  letter-spacing:0;
+}
+
+.topbar{
+  position:sticky;top:0;z-index:60;
+  display:flex;justify-content:space-between;align-items:center;
+  gap:14px;flex-wrap:wrap;
+  padding:14px 5vw;
+  background:rgba(255,255,255,.96);
+  border-bottom:1px solid var(--line);
+  backdrop-filter:blur(10px);
+}
+.brand{font-size:22px;font-weight:800;color:var(--ink);letter-spacing:0}
+.brand span{color:var(--lime)}
+.nav{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.nav a{
+  text-decoration:none;font-size:14px;font-weight:600;color:var(--ink);
+  padding:6px 4px;border-bottom:2px solid transparent;
+}
+.nav a:hover{border-bottom-color:var(--steel)}
+.btn{
+  border:0;border-radius:8px;padding:9px 14px;font-weight:700;font-size:14px;
+  background:var(--steel);color:#334a5c;transition:transform .12s ease,opacity .12s ease;
+}
+.btn:hover{transform:translateY(-1px);opacity:.92}
+.btn.ghost{background:#fff;color:#4a6a7d;border:1.5px solid var(--steel)}
+.btn.green{background:var(--sky);color:#334a5c}
+
+main{display:block}
+.bg-decor{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.bg-decor .star{
+  position:absolute;width:12px;height:12px;background:var(--lime);
+  clip-path:polygon(50% 0%, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0% 50%, 38% 38%);
+  opacity:.7;
+  animation:twinkle 3.2s ease-in-out infinite;
+}
+.bg-decor .dot{
+  position:absolute;width:9px;height:9px;background:var(--pink);
+  border-radius:50%;opacity:.5;
+  animation:floaty 5.4s ease-in-out infinite;
+}
+.bg-decor .daisy{
+  position:absolute;opacity:.8;filter:drop-shadow(0 0 2px rgba(201,233,255,.8));
+  animation:floaty 6.5s ease-in-out infinite;
+}
+@keyframes twinkle{
+  0%,100%{opacity:.2;transform:scale(.7)}
+  50%{opacity:.85;transform:scale(1.1)}
+}
+@keyframes floaty{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-16px)}
+}
+.band{max-width:1080px;margin:0 auto;padding:58px 6vw}
+.hero{position:relative;overflow:hidden;background:var(--sand)}
+main{position:relative;z-index:1}
+.hero-bg{
+  position:absolute;inset:0;z-index:0;
+  background-size:cover;background-position:center;background-repeat:no-repeat;
+}
+.hero-hearts{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.hero-hearts .heart{
+  position:absolute;fill:#f6a5b5;opacity:.5;
+  animation:floaty 5s ease-in-out infinite;
+}
+.hero .band{
+  position:relative;z-index:1;
+  display:block;
+  padding-top:26px;padding-bottom:52px;
+}
+.hero-topbar{
+  display:flex;justify-content:space-between;align-items:center;gap:14px;
+  width:100%;margin-bottom:18px;flex-wrap:wrap;
+}
+.hero-inner{
+  display:grid;grid-template-columns:1.2fr .8fr;gap:44px;align-items:center;
+  max-width:980px;margin:18px auto 0;
+}
+.hero-inner h1{margin:0 0 12px}
+.hero h1{
+  font-size:clamp(34px,6vw,58px);line-height:1.04;color:var(--lime);letter-spacing:0;
+}
+.kicker{
+  display:inline-block;background:#fff;color:#4a6a7d;font-weight:800;
+  border-radius:8px;padding:6px 12px;font-size:13px;margin-bottom:16px;letter-spacing:.2px;
+}
+.lead{font-size:17px;color:#5c7280;max-width:640px;margin:14px 0 20px}
+.chips{display:flex;gap:10px;flex-wrap:wrap}
+.chip{
+  background:#fff;border:1.5px solid var(--lime);color:#4a6a7d;font-weight:700;
+  border-radius:8px;padding:7px 12px;font-size:13px;
+}
+.hero-visual{
+  position:relative;overflow:hidden;
+  width:min(270px,70vw);aspect-ratio:1734/2507;
+  background:#fff;border:1px solid var(--line);border-radius:8px;
+  display:flex;align-items:center;justify-content:center;text-align:center;
+  padding:0;color:#4a6a7d;font-weight:700;font-size:16px;line-height:1.5;
+  justify-self:end;
+}
+.hero-visual .empty-state{
+  width:100%;height:100%;padding:20px;display:flex;align-items:center;justify-content:center;
+  border:0;border-radius:0;
+}
+.hero-visual img,.hero-visual video{
+  width:100%;height:100%;object-fit:cover;display:block;border-radius:0;
+}
+.hero-visual .media-controls{
+  position:absolute;left:0;right:0;bottom:0;justify-content:center;
+  background:rgba(255,255,255,.92);margin:0;
+}
+
+.section-title{
+  font-size:clamp(24px,3.4vw,34px);color:var(--lime);margin:0 0 8px;letter-spacing:0;
+}
+.section-note{color:var(--muted);margin:0 0 24px;font-size:15px}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start}
+.case-card,.list-card{
+  background:#fff;border:1px solid var(--line);border-radius:8px;padding:24px;
+  box-shadow:0 6px 22px rgba(61,77,89,.05);
+}
+.case-media{
+  position:relative;overflow:hidden;border:1px solid var(--line);border-radius:8px;
+  background:#fff;margin-bottom:16px;
+}
+.case-media a{display:block}
+.case-media img{
+  width:100%;height:auto;max-height:420px;object-fit:contain;display:block;background:#f6f9ff;
+  cursor:zoom-in;
+}
+.case-media .empty-state{padding:24px;border:0}
+.case-media .media-controls{
+  position:absolute;left:0;right:0;bottom:0;justify-content:center;
+  background:rgba(255,255,255,.92);margin:0;
+}
+.case-banner{margin-bottom:22px}
+.case-banner.is-wide{height:150px}
+.case-banner.is-wide img{
+  width:100%;height:100%;max-height:none;object-fit:cover;
+}
+.case-banner .empty-state{height:100%;margin:0}
+.about-actions{margin-top:10px}
+.about-actions .btn{display:inline-block;text-decoration:none}
+.case-card h3,.list-card h3{margin:0 0 8px;color:var(--pink);font-size:20px}
+.case-card p,.list-card p{margin:0 0 12px;color:#4b5c62;font-size:14.5px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:20px 0}
+.stat{background:#fff;border:1px solid var(--line);border-radius:8px;padding:16px;text-align:center;box-shadow:0 4px 16px rgba(61,77,89,.04)}
+.stat b{display:block;font-size:24px;color:var(--lime);line-height:1.1;margin-bottom:4px}
+.stat span{font-size:12.5px;color:var(--muted);font-weight:600}
+.mini-list{margin:0;padding-left:18px;color:#4b5c62;font-size:14px}
+.mini-list li{margin-bottom:8px}
+.tag-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.tag{background:var(--sand);color:#4a6a7d;font-weight:700;font-size:12.5px;border-radius:8px;padding:6px 10px}
+
+.accounts{background:transparent}
+.accounts-head{
+  display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;
+}
+.accounts-head .section-title{margin-bottom:6px}
+.accounts-head .section-note{margin-bottom:0}
+.accounts-head .btn{white-space:nowrap}
+.account-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.account-item{background:#fff;border:1px solid var(--line);border-radius:8px;padding:20px;box-shadow:0 4px 16px rgba(61,77,89,.04)}
+.account-item h3{margin:0 0 6px;font-size:17px;color:var(--pink)}
+.account-item p{margin:0;font-size:13.5px;color:#4b5c62}
+.account-item .mini-btn{margin-top:12px;display:inline-block}
+
+.strategy-path{
+  display:flex;gap:10px;flex-wrap:wrap;align-items:center;
+  background:#fff;border:1px solid var(--line);border-radius:8px;padding:14px 18px;
+  margin-bottom:20px;font-weight:800;color:#4a6a7d;
+}
+.strategy-path span{
+  background:var(--sand);border:1px solid var(--lime);border-radius:8px;
+  padding:6px 12px;font-size:13px;
+}
+.strategy-path i{color:var(--pink);font-style:normal;font-size:15px}
+.strategy-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.strategy-card{
+  background:#fff;border:1px solid var(--line);border-radius:8px;padding:22px;
+  box-shadow:0 4px 16px rgba(61,77,89,.04);
+}
+.strategy-card h3{margin:0 0 10px;font-size:18px;color:var(--pink)}
+.strategy-card p{margin:0 0 10px;font-size:14px;color:#4b5c62}
+
+.kol-brand{
+  background:#fff;border:1px solid var(--line);border-radius:8px;padding:22px;margin-bottom:18px;
+  box-shadow:0 4px 16px rgba(61,77,89,.04);
+}
+.kol-brand h3{margin:0 0 8px;color:var(--pink);font-size:19px}
+.kol-brand p{margin:0 0 10px;color:#4b5c62;font-size:14px}
+.kol-tags{display:flex;gap:8px;flex-wrap:wrap}
+.table-scroll{overflow-x:auto;background:#fff;border:1px solid var(--line);border-radius:8px}
+.data-table{width:100%;border-collapse:collapse;font-size:12.5px;min-width:760px}
+.data-table th{
+  background:var(--sand);color:#4a6a7d;text-align:left;padding:10px 12px;font-size:12.5px;
+  white-space:nowrap;border-bottom:1px solid var(--line);
+}
+.data-table td{
+  padding:9px 12px;border-bottom:1px solid #eef3f4;color:#4b5c62;vertical-align:top;
+}
+.data-table tr:last-child td{border-bottom:0}
+.list-card .table-scroll{overflow:hidden;border-radius:8px}
+.list-card .data-table{
+  min-width:0;width:100%;table-layout:fixed;font-size:12px;
+}
+.list-card .data-table th,.list-card .data-table td{
+  border:1px solid #e4edf0;padding:8px 9px;vertical-align:top;word-break:break-word;
+}
+.list-card .data-table th{
+  background:var(--sand);color:#4a6a7d;font-size:12px;white-space:normal;
+}
+.list-card .data-table th:first-child,.list-card .data-table td:first-child{
+  width:26%;color:#4a6a7d;font-weight:700;background:#fbfdf2;
+}
+.list-card .data-table th:nth-child(2),.list-card .data-table td:nth-child(2){
+  width:24%;
+}
+.kol-table-wrap{margin-bottom:28px}
+.kol-subhead{margin:0 0 12px;font-size:20px;color:var(--pink)}
+
+.plan-check{
+  background:#fff;border:1px solid var(--line);border-radius:8px;padding:20px;margin-top:18px;
+}
+.plan-check h3{margin:0 0 8px;color:var(--pink);font-size:16px}
+.plan-check p{margin:0;color:#4b5c62;font-size:14px}
+@media (max-width:860px){
+  .strategy-grid{grid-template-columns:1fr}
+}
+
+.media-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}
+.media-card{
+  background:#fff;border:1px solid var(--line);border-radius:8px;overflow:hidden;
+  position:relative;display:flex;flex-direction:column;box-shadow:0 4px 16px rgba(61,77,89,.04);
+}
+.media-card img,.media-card video{width:100%;aspect-ratio:4/3;object-fit:contain;display:block;background:#f6f9ff}
+.media-card img{cursor:zoom-in}
+.media-card .media-name{
+  padding:8px 10px 2px;font-size:13px;font-weight:700;color:var(--ink);
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.media-controls{display:flex;gap:6px;padding:8px 10px 10px;margin-top:auto}
+.mini-btn{
+  border:1px solid var(--line);background:#fff;color:#4a6a7d;border-radius:8px;
+  padding:5px 9px;font-size:12px;font-weight:700;
+}
+.mini-btn.danger{color:#c9506e;border-color:#f4c9d4}
+.empty-state{
+  border:2px dashed var(--lime);border-radius:8px;padding:34px;text-align:center;
+  color:var(--muted);background:#f6fbff;
+}
+
+.skills-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.skill-item{background:#fff;border:1px solid var(--line);border-radius:8px;padding:20px;box-shadow:0 4px 16px rgba(61,77,89,.04)}
+.skill-item h3{margin:0 0 8px;font-size:16px;color:var(--pink)}
+.skill-item p{margin:0;font-size:13px;color:#4b5c62}
+
+.contact{background:transparent;color:#334a5c;text-align:center;border-top:1px solid var(--line)}
+.contact .band{padding-top:44px;padding-bottom:44px}
+.contact h2{color:#334a5c;margin:0 0 10px}
+.contact p{margin:4px 0;font-weight:600}
+
+.motto{background:transparent}
+.motto .band{text-align:center;padding-top:46px;padding-bottom:46px}
+.motto-text{font-size:clamp(19px,3vw,26px);font-weight:700;color:var(--ink);margin:0;line-height:1.6}
+
+.editing [data-key]{
+  outline:2px dashed var(--lime);outline-offset:5px;border-radius:6px;min-width:30px;cursor:text;
+}
+.editing [data-key]:hover{outline-color:var(--ink)}
+
+/* upload overlay */
+.overlay{
+  position:fixed;inset:0;background:rgba(47,63,69,.45);z-index:100;
+  display:flex;align-items:center;justify-content:center;padding:20px;
+}
+.panel{
+  background:#fff;border-radius:8px;max-width:560px;width:100%;padding:26px;
+  box-shadow:0 18px 50px rgba(61,77,89,.22);
+}
+.panel h3{margin:0 0 6px;color:var(--pink)}
+.panel p{margin:0 0 16px;color:var(--muted);font-size:14px}
+.dropzone{
+  border:2px dashed var(--steel);border-radius:8px;background:#f6fbff;
+  padding:34px 18px;text-align:center;color:#4a6a7d;font-weight:700;
+}
+.panel-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:18px}
+[hidden]{display:none!important}
+
+footer{background:var(--ink);color:#eaf4f7;text-align:center;padding:26px 16px;font-size:13px}
+footer a{color:var(--sand)}
+
+.lightbox{
+  position:fixed;inset:0;z-index:200;background:rgba(20,28,31,.92);
+  display:flex;align-items:center;justify-content:center;padding:24px;
+}
+.lightbox img{
+  max-width:100%;max-height:100%;object-fit:contain;border-radius:8px;
+  box-shadow:0 18px 60px rgba(0,0,0,.35);
+}
+.lightbox-close{
+  position:absolute;top:18px;right:22px;background:rgba(255,255,255,.16);color:#fff;
+  border:0;border-radius:50%;width:44px;height:44px;font-size:24px;line-height:1;cursor:pointer;
+}
+
+@media (max-width:860px){
+  .hero .band{padding-top:22px;padding-bottom:38px}
+  .hero-inner{grid-template-columns:1fr;text-align:center;margin-top:12px}
+  .hero-inner .hero-visual{justify-self:center}
+  .hero-inner .lead{margin-left:auto;margin-right:auto}
+  .hero-inner .chips{justify-content:center}
+  .split,.case-grid{grid-template-columns:1fr}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .account-grid,.skills-grid{grid-template-columns:1fr 1fr}
+  .band{padding:42px 5vw}
+}
+@media (max-width:560px){
+  .nav{width:100%;justify-content:flex-start}
+  .account-grid,.skills-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">Jasmine<span>.</span></div>
+  <nav class="nav">
+    <a href="#motto">座右铭</a>
+    <a href="#about">关于我</a>
+    <a href="#case">案例复盘</a>
+    <a href="#accounts">过往案例</a>
+    <a href="#media">作品集</a>
+    <a href="#strategy">策略调研</a>
+    <a href="#kol">KOL营销</a>
+    <a href="#skills">技能</a>
+    <button class="btn ghost" id="editBtn">编辑内容</button>
+    <button class="btn" id="uploadBtn">上传作品</button>
+  </nav>
+</header>
+
+<div class="bg-decor" aria-hidden="true">
+  <span class="star" style="left:6%;top:16%;animation-delay:.2s"></span>
+  <span class="star" style="left:18%;top:64%;animation-delay:1.1s"></span>
+  <span class="star" style="left:35%;top:10%;animation-delay:.6s"></span>
+  <span class="star" style="left:52%;top:78%;animation-delay:1.6s"></span>
+  <span class="star" style="left:68%;top:22%;animation-delay:.9s"></span>
+  <span class="star" style="left:83%;top:58%;animation-delay:.4s"></span>
+  <span class="star" style="left:92%;top:32%;animation-delay:2s"></span>
+  <span class="dot" style="left:12%;top:38%;animation-delay:.3s"></span>
+  <span class="dot" style="left:28%;top:86%;animation-delay:1.4s"></span>
+  <span class="dot" style="left:45%;top:42%;animation-delay:.8s"></span>
+  <span class="dot" style="left:61%;top:6%;animation-delay:1.8s"></span>
+  <span class="dot" style="left:76%;top:70%;animation-delay:.5s"></span>
+  <span class="dot" style="left:89%;top:14%;animation-delay:2.3s"></span>
+  <svg class="daisy" width="46" height="46" viewBox="0 0 46 46" style="left:24%;top:22%;animation-delay:.7s" aria-hidden="true">
+    <g fill="#ffffff" stroke="#c9e9ff" stroke-width="1.2">
+      <path d="M23 23 C21 17 19.5 9 23 4.8 C26.5 9 25 17 23 23"></path>
+      <path d="M23 23 C21 17 19.5 9 23 4.8 C26.5 9 25 17 23 23" transform="rotate(30 23 23)"></path>
+      <path d="M23 23 C21 17 19.5 9 23 4.8 C26.5 9 25 17 23 23" transform="rotate(60 23 23)"></path>
+      <path d="M23 23 C21 17 19.5 9 23 4.8 C26.5 9 25 17 23 23" transform="rotate(90 23 23)"></path>
+      <path d="M23 23 C21 17 19.5 9 23 4.8 C26.5 9 25 17 23 23" transform="rotate(120 23 23)"></path>
+      <path d="M23 23 C21 17 19.5 9 23 4.8 C26.5 9 25 17 23 23" transform="rotate(150 23 23)"></path>
+      <path d="M23 23 C21 17 19.5 9 23 4.8 C26.5 9 25 17 23 23" transform="rotate(180 23 23)"></path>
+      <path d="M23 23 C21 17 19.5 9 23 4.8 C26.5 9 25 17 23 23" transform="rotate(210 23 23)"></path>
+      <path d="M23 23 C21 17 19.5 9 23 4.8 C26.5 9 25 17 23 23" transform="rotate(240 23 23)"></path>
+      <path d="M23 23 C21 17 19.5 9 23 4.8 C26.5 9 25 17 23 23" transform="rotate(270 23 23)"></path>
+      <path d="M23 23 C21 17 19.5 9 23 4.8 C26.5 9 25 17 23 23" transform="rotate(300 23 23)"></path>
+      <path d="M23 23 C21 17 19.5 9 23 4.8 C26.5 9 25 17 23 23" transform="rotate(330 23 23)"></path>
+    </g>
+    <circle cx="23" cy="23" r="6" fill="#c9e9ff"></circle>
+  </svg>
+  <svg class="daisy" width="40" height="40" viewBox="0 0 46 46" style="left:56%;top:62%;animation-delay:1.5s" aria-hidden="true">
+    <g fill="#ffffff" stroke="#c9e9ff" stroke-width="1.2">
+      <path d="M23 23 C21 17 19.5 9 23 4.8 C26.5 9 25 17 23 23"></path>
+      <path d="M23 23 C21 17 19.5 9 23 4.8 C26.5 9 25 17 23 23" transform="rotate(30 23 23)"></path>
+      <path d="M23 23 C21 17 19.5 9 23 4.8 C26.5 9 25 17 23 23" transform="rotate(60 23 23)"></path>
+      <path d="M23 23 C21 17 19.5 9 23 4.8 C26.5 9 25 17 23 23" transform="rotate(90 23 23)"></path>
+      <path d="M23 23 C21 17 19.5 9 23 4.8 C26.5 9 25 17 23 23" transform="rotate(120 23 23)"></path>
+      <path d="M23 23 C21 17 19.5 9 23 4.8 C26.5 9 25 17 23 23" transform="rotate(150 23 23)"></path>
+      <path d="M23 23 C21 17 19.5 9 23 4.8 C26.5 9 25 17 23 23" transform="rotate(180 23 23)"></path>
+      <path d="M23 23 C21 17 19.5 9 23 4.8 C26.5 9 25 17 23 23" transform="rotate(210 23 23)"></path>
+      <path d="M23 23 C21 17 19.5 9 23 4.8 C26.5 9 25 17 23 23" transform="rotate(240 23 23)"></path>
+      <path d="M23 23 C21 17 19.5 9 23 4.8 C26.5 9 25 17 23 23" transform="rotate(270 23 23)"></path>
+      <path d="M23 23 C21 17 19.5 9 23 4.8 C26.5 9 25 17 23 23" transform="rotate(300 23 23)"></path>
+      <path d="M23 23 C21 17 19.5 9 23 4.8 C26.5 9 25 17 23 23" transform="rotate(330 23 23)"></path>
+    </g>
+    <circle cx="23" cy="23" r="6" fill="#c9e9ff"></circle>
+  </svg>
+  <svg class="daisy" width="52" height="52" viewBox="0 0 46 46" style="left:84%;top:38%;animation-delay:2.1s" aria-hidden="true">
+    <g fill="#ffffff" stroke="#c9e9ff" stroke-width="1.2">
+      <path d="M23 23 C21 17 19.5 9 23 4.8 C26.5 9 25 17 23 23"></path>
+      <path d="M23 23 C21 17 19.5 9 23 4.8 C26.5 9 25 17 23 23" transform="rotate(30 23 23)"></path>
+      <path d="M23 23 C21 17 19.5 9 23 4.8 C26.5 9 25 17 23 23" transform="rotate(60 23 23)"></path>
+      <path d="M23 23 C21 17 19.5 9 23 4.8 C26.5 9 25 17 23 23" transform="rotate(90 23 23)"></path>
+      <path d="M23 23 C21 17 19.5 9 23 4.8 C26.5 9 25 17 23 23" transform="rotate(120 23 23)"></path>
+      <path d="M23 23 C21 17 19.5 9 23 4.8 C26.5 9 25 17 23 23" transform="rotate(150 23 23)"></path>
+      <path d="M23 23 C21 17 19.5 9 23 4.8 C26.5 9 25 17 23 23" transform="rotate(180 23 23)"></path>
+      <path d="M23 23 C21 17 19.5 9 23 4.8 C26.5 9 25 17 23 23" transform="rotate(210 23 23)"></path>
+      <path d="M23 23 C21 17 19.5 9 23 4.8 C26.5 9 25 17 23 23" transform="rotate(240 23 23)"></path>
+      <path d="M23 23 C21 17 19.5 9 23 4.8 C26.5 9 25 17 23 23" transform="rotate(270 23 23)"></path>
+      <path d="M23 23 C21 17 19.5 9 23 4.8 C26.5 9 25 17 23 23" transform="rotate(300 23 23)"></path>
+      <path d="M23 23 C21 17 19.5 9 23 4.8 C26.5 9 25 17 23 23" transform="rotate(330 23 23)"></path>
+    </g>
+    <circle cx="23" cy="23" r="6" fill="#c9e9ff"></circle>
+  </svg>
+</div>
+
+<main>
+  <section class="hero">
+    <div class="hero-bg" id="heroBg"></div>
+    <div class="hero-hearts" aria-hidden="true">
+      <svg class="heart" viewBox="0 0 24 24" style="left:6%;top:20%;width:20px;animation-delay:.4s"><path d="M12 21s-8-5.1-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 5.9-8 11-8 11z"></path></svg>
+      <svg class="heart" viewBox="0 0 24 24" style="left:16%;top:68%;width:14px;animation-delay:1.2s"><path d="M12 21s-8-5.1-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 5.9-8 11-8 11z"></path></svg>
+      <svg class="heart" viewBox="0 0 24 24" style="left:38%;top:14%;width:12px;animation-delay:.8s"><path d="M12 21s-8-5.1-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 5.9-8 11-8 11z"></path></svg>
+      <svg class="heart" viewBox="0 0 24 24" style="left:74%;top:16%;width:18px;animation-delay:1.6s"><path d="M12 21s-8-5.1-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 5.9-8 11-8 11z"></path></svg>
+      <svg class="heart" viewBox="0 0 24 24" style="left:86%;top:42%;width:13px;animation-delay:.3s"><path d="M12 21s-8-5.1-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 5.9-8 11-8 11z"></path></svg>
+      <svg class="heart" viewBox="0 0 24 24" style="left:68%;top:78%;width:16px;animation-delay:2s"><path d="M12 21s-8-5.1-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 5.9-8 11-8 11z"></path></svg>
+      <svg class="heart" viewBox="0 0 24 24" style="left:30%;top:82%;width:11px;animation-delay:1.4s"><path d="M12 21s-8-5.1-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 5.9-8 11-8 11z"></path></svg>
+      <svg class="heart" viewBox="0 0 24 24" style="left:92%;top:72%;width:15px;animation-delay:.9s"><path d="M12 21s-8-5.1-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 5.9-8 11-8 11z"></path></svg>
+    </div>
+    <div class="band">
+      <div class="hero-topbar">
+        <span class="kicker">OVERSEAS SOCIAL MEDIA · CONTENT · GROWTH</span>
+        <div>
+          <button class="mini-btn" id="heroBgBtn">更换背景图</button>
+          <button class="mini-btn danger" id="heroBgClear" hidden>移除背景图</button>
+        </div>
+      </div>
+      <div class="hero-inner">
+        <div>
+          <h1 data-key="hero_title">你好，我叫冼诗婷（Jasmine）</h1>
+          <p class="lead" data-key="hero_sub">海外社媒运营 · 内容创作者 · 跨文化沟通</p>
+          <p class="lead" data-key="hero_desc">俄语、英语、粤语 ｜ 传播学硕士 ｜ 3 个账号运营经验。我相信好的运营不是复制爆款，而是理解用户、持续测试、诚实复盘。</p>
+          <div class="chips">
+            <span class="chip">TikTok</span>
+            <span class="chip">Instagram</span>
+            <span class="chip">小红书</span>
+            <span class="chip">AI 工作流</span>
+            <span class="chip">多语言</span>
+          </div>
+        </div>
+        <div class="hero-visual" id="photoSlot">
+          <div class="empty-state" id="photoEmpty">上传个人证件照</div>
+          <div id="photoMedia" hidden></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="motto" class="motto">
+    <div class="band">
+      <span class="kicker">MY MOTTO</span>
+      <h2 class="section-title" data-key="motto_title">个人座右铭</h2>
+      <p class="motto-text" data-key="motto">慢慢来，比较快。认真做好每一次内容，真诚对待每一位用户。</p>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="band">
+      <h2 class="section-title">关于我</h2>
+      <p class="section-note" data-key="about_note">内容运营 × 用户沟通 × 增长实验</p>
+      <div class="case-card">
+        <div data-key="about_desc">
+          <p>我做过小红书、TikTok、Instagram 的内容运营，也做过直播、文案、图文、短视频和 AI 工作流。我的优势是审美在线、多语言沟通、愿意用数据做决定。</p>
+          <p>运营对我不是机械发内容，而是找到真实用户关心的事情，用内容建立连接，再用反馈把下一次做得更好。</p>
+        </div>
+        <div class="about-actions">
+          <a class="btn" href="冼诗婷-海外营销-出海增长.pdf" target="_blank">查看简历</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="case">
+    <div class="band">
+      <h2 class="section-title">内容测试案例</h2>
+      <p class="section-note" data-key="case_note">一次不算大的数据突破，一次真实的复盘</p>
+      <div class="case-media case-banner" id="caseImgSlot">
+        <div class="empty-state" id="caseImgEmpty">上传案例图片</div>
+        <div id="caseImgMedia" hidden></div>
+      </div>
+      <div class="split">
+        <div class="case-card">
+          <h3 data-key="case_title">水晶如何听声音分辨真假</h3>
+          <p data-key="case_desc">这是我做过的一条短视频内容：用“听声音”这个实用的知识点吸引用户，再用声音对比和实物展示完成演示。</p>
+          <div class="stats" data-key="stats">
+            <div class="stat"><b>3000+</b><span>自然播放</span></div>
+            <div class="stat"><b>46</b><span>点赞</span></div>
+            <div class="stat"><b>3</b><span>收藏</span></div>
+            <div class="stat"><b>1.7%</b><span>互动率</span></div>
+          </div>
+          <div class="tag-row">
+            <span class="tag">选题自带好奇心</span>
+            <span class="tag">视听演示</span>
+            <span class="tag">系列化潜力</span>
+          </div>
+        </div>
+        <div class="list-card">
+          <h3 data-key="review_title">数据复盘</h3>
+          <div class="table-scroll">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>复盘维度</th>
+                  <th>数据记录</th>
+                  <th>复盘思考</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>播放量 / 阅读量</td>
+                  <td data-key="review_views_data">3000+</td>
+                  <td data-key="review_views_note">自然播放远高于账号均值，验证了“实用鉴别”选题有吸引力</td>
+                </tr>
+                <tr>
+                  <td>点赞数</td>
+                  <td data-key="review_likes_data">46</td>
+                  <td data-key="review_likes_note">有共鸣但钩子还不够强，点赞转化偏低</td>
+                </tr>
+                <tr>
+                  <td>收藏数</td>
+                  <td data-key="review_saves_data">3</td>
+                  <td data-key="review_saves_note">缺少“保存下来慢慢看”的指令，收藏率低</td>
+                </tr>
+                <tr>
+                  <td>评论数</td>
+                  <td data-key="review_comments_data">2</td>
+                  <td data-key="review_comments_note">结尾没有提问互动，评论引导不足</td>
+                </tr>
+                <tr>
+                  <td>分享数</td>
+                  <td data-key="review_shares_data">3</td>
+                  <td data-key="review_shares_note">分享 3 次，说明有被转发价值，可继续强化“值得分享”的选题</td>
+                </tr>
+                <tr>
+                  <td>经验清单</td>
+                  <td data-key="review_experience_data">选题、视听演示、系列化</td>
+                  <td data-key="review_experience_note">沉淀成标准动作：实用选题 + 声音对比 + 实物展示</td>
+                </tr>
+                <tr>
+                  <td>问题清单</td>
+                  <td data-key="review_problem_data">互动引导弱</td>
+                  <td data-key="review_problem_note">前 3 秒加钩子，结尾引导评论、收藏和分享</td>
+                </tr>
+                <tr>
+                  <td>下一步行动计划</td>
+                  <td data-key="review_next_data">系列化 + 互动引导</td>
+                  <td data-key="review_next_note">把“真假鉴别”做成系列：听声、看纹理、掂重量、烧针测试；前 3 秒加钩子，结尾引导评论、收藏和分享；用同一素材测试不同标题、封面和发布时间。</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="accounts" class="accounts">
+    <div class="band">
+      <div class="accounts-head">
+        <div>
+          <h2 class="section-title">过往案例</h2>
+          <p class="section-note" data-key="accounts_note">做过 3 个账号，有的成功，有的还在试错</p>
+        </div>
+        <button class="btn ghost" id="addAccountBtn">添加账号</button>
+      </div>
+      <div class="account-grid" id="accountGrid"></div>
+    </div>
+  </section>
+
+  <section id="media">
+    <div class="band">
+      <h2 class="section-title">作品与素材</h2>
+      <p class="section-note" data-key="media_note">在这里上传你的图片、视频和案例截图</p>
+      <div class="media-grid" id="mediaGrid"></div>
+      <div class="dropzone" id="dropZone" style="margin-top:18px">
+        点击或拖拽图片 / 视频到这里
+      </div>
+    </div>
+  </section>
+
+  <section id="strategy" class="strategy">
+    <div class="band">
+      <h2 class="section-title">海外营销策略与竞品调研</h2>
+      <p class="section-note" data-key="strategy_note">我的思考路径：先看市场，再定品牌，最后从竞品缺口里找切入点。</p>
+      <div class="strategy-path" aria-label="思考路径">
+        <span>市场分析</span><i>→</i>
+        <span>目标用户</span><i>→</i>
+        <span>平台选择</span><i>→</i>
+        <span>品牌定位</span><i>→</i>
+        <span>竞品拆解</span><i>→</i>
+        <span>机会点</span>
+      </div>
+      <div class="strategy-grid">
+        <div class="strategy-card">
+          <h3 data-key="strategy_market_title">市场分析</h3>
+          <div data-key="strategy_market">
+            <ul class="mini-list">
+              <li>先看市场规模、增速和红利窗口，判断赛道是否值得进入。</li>
+              <li>再圈定目标用户：谁有强需求、谁愿意付费、谁已经养成了内容消费习惯。</li>
+              <li>落到平台：欧美以 YouTube / TikTok / Instagram 为主，东南亚更依赖 TikTok 与电商生态，内容节奏和审美差异明显。</li>
+              <li>记录趋势信号：AI 工具爆发、平台算法变化、用户对真实 UGC 的信任度，都会影响投放节奏。</li>
+            </ul>
+          </div>
+        </div>
+        <div class="strategy-card">
+          <h3 data-key="strategy_brand_title">品牌定位</h3>
+          <div data-key="strategy_brand">
+            <ul class="mini-list">
+              <li>用一句话说清品牌是什么、为谁解决什么问题、和别人的不同。</li>
+              <li>确立品牌调性：专业但不冰冷，年轻但不幼稚，让用户觉得“它懂我”。</li>
+              <li>把定位翻译成内容语言：选题、文案口吻、视觉风格、达人合作方向，都服务于同一个心智。</li>
+            </ul>
+          </div>
+        </div>
+        <div class="strategy-card">
+          <h3 data-key="strategy_competitor_title">竞品分析</h3>
+          <div data-key="strategy_competitor">
+            <ul class="mini-list">
+              <li>列出 3-5 个直接竞品和 2-3 个替代方案，不只比功能，也比心智和内容。</li>
+              <li>拆解竞品账号：内容结构、更新频率、爆款选题、评论区高频问题、转化路径。</li>
+              <li>找出差异点：竞品没讲清楚的、讲得太硬的、用户已经抱怨的，都是我们的机会。</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="plan-check" style="margin-top:18px">
+        <h3 data-key="strategy_conclusion_title">策略结论</h3>
+        <p data-key="strategy_conclusion">我的习惯是输出一张“机会表”：市场机会 + 用户痛点 + 竞品缺口 + 品牌优势，四项交叉的地方就是第一波内容的切入点。</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="kol" class="kol">
+    <div class="band">
+      <h2 class="section-title">KOL 营销方案</h2>
+      <p class="section-note" data-key="kol_note_v2">以美国、英国、法国、德国等欧美市场为主筛选真实达人，数据为公开资料整理，投放前建议用工具复核最新粉丝数与互动率。</p>
+      <div class="kol-brand">
+        <h3 data-key="kol_brand_title_v2">模拟品牌：Jewelora AI（饰品 AI 场景化网站）</h3>
+        <p data-key="kol_brand_desc_v2">Jewelora AI 是面向饰品品牌的 AI 场景化内容生成网站：上传产品原图，自动生成适配的场景图与短视频，准确保留产品的形状、颜色和质感，画面自然、无 AI 感。目标用户是饰品独立站、跨境电商卖家和社媒运营团队。品牌调性：高级、真实、克制、有质感，像一支随时可用的专业摄影团队。</p>
+        <div class="kol-tags">
+          <span class="tag">饰品</span>
+          <span class="tag">时尚穿搭</span>
+          <span class="tag">AI 场景图</span>
+          <span class="tag">独立站</span>
+        </div>
+      </div>
+      <h3 class="kol-subhead" data-key="kol_filter_title_v2">达人筛选逻辑</h3>
+      <div class="case-card" style="margin-bottom:22px">
+        <div data-key="kol_filter_v2">
+          <ul class="mini-list">
+            <li>按“品类相关性 &gt; 内容质量 &gt; 互动率 &gt; 粉丝层级”筛选，以美国、英国、法国、德国等欧美市场为主，优先时尚、饰品、穿搭、生活方式和独立站种草类账号。</li>
+            <li>分层搭配：Nano 测内容、Micro 做口碑、Mid 做量、Macro / Mega 做声量，控制预算和风险。</li>
+            <li>适配理由必须和“真实质感 + 高级审美”的品牌调性一致，避免只看粉丝数。</li>
+            <li>名单均为真实公开账号，粉丝数与互动率为近期参考值，合作前需复核。</li>
+          </ul>
+        </div>
+      </div>
+      <h3 class="kol-subhead" data-key="kol_list_title_v2">10 位达人筛选池（可更改）</h3>
+      <div class="table-scroll kol-table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>达人 / 账号</th>
+              <th>平台</th>
+              <th>层级</th>
+              <th>粉丝数</th>
+              <th>适配理由</th>
+            </tr>
+          </thead>
+          <tbody id="kolBody"></tbody>
+        </table>
+      </div>
+      <h3 class="kol-subhead" data-key="kol_review_title_v2">投放数据复盘模板</h3>
+      <div class="table-scroll">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>达人 / 账号</th>
+              <th>层级</th>
+              <th>平台</th>
+              <th>内容形式</th>
+              <th>播放量</th>
+              <th>点赞</th>
+              <th>评论</th>
+              <th>分享 / 收藏</th>
+              <th>互动率</th>
+              <th>转化 / 引流</th>
+              <th>单粉成本</th>
+              <th>复盘结论</th>
+              <th>下一步</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td data-key="kol_rev_1_name_v2">示例达人 A</td>
+              <td data-key="kol_rev_1_tier_v2">Micro</td>
+              <td data-key="kol_rev_1_platform_v2">TikTok</td>
+              <td data-key="kol_rev_1_format_v2">穿搭种草视频</td>
+              <td data-key="kol_rev_1_views_v2">28.4K</td>
+              <td data-key="kol_rev_1_likes_v2">2,860</td>
+              <td data-key="kol_rev_1_comments_v2">184</td>
+              <td data-key="kol_rev_1_shares_v2">620</td>
+              <td data-key="kol_rev_1_er_v2">9.8%</td>
+              <td data-key="kol_rev_1_cvr_v2">引站 1,240 次</td>
+              <td data-key="kol_rev_1_cpa_v2">$0.42</td>
+              <td data-key="kol_rev_1_note_v2">场景图自然，评论区问耳饰购买链接</td>
+              <td data-key="kol_rev_1_next_v2">加做三款产品场景对比</td>
+            </tr>
+            <tr>
+              <td data-key="kol_rev_2_name_v2">示例达人 B</td>
+              <td data-key="kol_rev_2_tier_v2">Mid</td>
+              <td data-key="kol_rev_2_platform_v2">Instagram</td>
+              <td data-key="kol_rev_2_format_v2">场景图文 + Reels</td>
+              <td data-key="kol_rev_2_views_v2">86.2K</td>
+              <td data-key="kol_rev_2_likes_v2">5,120</td>
+              <td data-key="kol_rev_2_comments_v2">410</td>
+              <td data-key="kol_rev_2_shares_v2">980</td>
+              <td data-key="kol_rev_2_er_v2">6.2%</td>
+              <td data-key="kol_rev_2_cvr_v2">引站 3,800 次</td>
+              <td data-key="kol_rev_2_cpa_v2">$0.68</td>
+              <td data-key="kol_rev_2_note_v2">高级质感匹配品牌调性</td>
+              <td data-key="kol_rev_2_next_v2">续签季度合作</td>
+            </tr>
+            <tr>
+              <td data-key="kol_rev_3_name_v2">示例达人 C</td>
+              <td data-key="kol_rev_3_tier_v2">Nano</td>
+              <td data-key="kol_rev_3_platform_v2">TikTok</td>
+              <td data-key="kol_rev_3_format_v2">饰品开箱测评</td>
+              <td data-key="kol_rev_3_views_v2">12.1K</td>
+              <td data-key="kol_rev_3_likes_v2">1,480</td>
+              <td data-key="kol_rev_3_comments_v2">96</td>
+              <td data-key="kol_rev_3_shares_v2">310</td>
+              <td data-key="kol_rev_3_er_v2">11.4%</td>
+              <td data-key="kol_rev_3_cvr_v2">引站 430 次</td>
+              <td data-key="kol_rev_3_cpa_v2">$0.31</td>
+              <td data-key="kol_rev_3_note_v2">真实佩戴反馈强，成本低</td>
+              <td data-key="kol_rev_3_next_v2">复制到同类 Nano 达人</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section id="skills">
+    <div class="band">
+      <h2 class="section-title">技能</h2>
+      <p class="section-note" data-key="skills_note">我用来做内容、做增长、做沟通的工具和能力</p>
+      <div class="skills-grid">
+        <div class="skill-item">
+          <h3>平台</h3>
+          <p data-key="skill1">TikTok / Instagram / Facebook / 小红书</p>
+        </div>
+        <div class="skill-item">
+          <h3>内容</h3>
+          <p data-key="skill2">文案 / 排版 / 短视频 / 直播 / 拍摄修图 / 选题策划</p>
+        </div>
+        <div class="skill-item">
+          <h3>工具</h3>
+          <p data-key="skill3">Canva / 剪映 / ChatGPT / Gemini / Claude / AI 工作流</p>
+        </div>
+        <div class="skill-item">
+          <h3>语言</h3>
+          <p data-key="skill4">俄语 TPKI-II / 英语 / 粤语</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact">
+    <div class="band">
+      <h2>联系我</h2>
+      <p data-key="contact1">电话：13178881410</p>
+      <p data-key="contact2">邮箱：1531674037@qq.com</p>
+      <p data-key="contact3">深圳 ｜ 可远程线上协作</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div>Jasmine 作品集 · 用内容连接品牌与真实用户</div>
+</footer>
+
+<div class="overlay" id="uploadOverlay" hidden>
+  <div class="panel">
+    <h3>上传作品</h3>
+    <p>支持图片和视频，文件会保存在当前浏览器中。</p>
+    <div class="dropzone" id="panelDropZone">
+      点击选择或拖拽图片 / 视频到这里
+    </div>
+    <div class="panel-actions">
+      <button class="btn ghost" id="cancelUpload">取消</button>
+    </div>
+  </div>
+</div>
+
+<input type="file" id="fileInput" accept="image/*,video/*" multiple hidden>
+<input type="file" id="heroBgInput" accept="image/*" hidden>
+<input type="file" id="photoInput" accept="image/*" hidden>
+<input type="file" id="caseImgInput" accept="image/*" hidden>
+<input type="file" id="importInput" accept="application/json" hidden>
+
+<div class="lightbox" id="lightbox" hidden>
+  <button class="lightbox-close" id="lightboxClose" aria-label="关闭">&times;</button>
+  <img id="lightboxImg" src="" alt="">
+</div>
+
+<script>
+const DB_NAME = "yana_portfolio_db";
+const STORE = "media";
+let mediaItems = [];
+
+function openDB(){
+  return new Promise((resolve,reject)=>{
+    const req = indexedDB.open(DB_NAME,1);
+    req.onupgradeneeded = ()=>{
+      const db = req.result;
+      if(!db.objectStoreNames.contains(STORE)){
+        const store = db.createObjectStore(STORE,{keyPath:"id",autoIncrement:true});
+        store.createIndex("order","order");
+      }
+    };
+    req.onsuccess = ()=>resolve(req.result);
+    req.onerror = ()=>reject(req.error);
+  });
+}
+
+async function dbAll(db){
+  return new Promise((resolve,reject)=>{
+    const tx = db.transaction(STORE,"readonly");
+    const req = tx.objectStore(STORE).getAll();
+    req.onsuccess = ()=>resolve(req.result);
+    req.onerror = ()=>reject(req.error);
+  });
+}
+
+async function dbAdd(db,item){
+  return new Promise((resolve,reject)=>{
+    const tx = db.transaction(STORE,"readwrite");
+    const req = tx.objectStore(STORE).add(item);
+    req.onsuccess = ()=>resolve(req.result);
+    req.onerror = ()=>reject(req.error);
+  });
+}
+
+async function dbPut(db,item){
+  return new Promise((resolve,reject)=>{
+    const tx = db.transaction(STORE,"readwrite");
+    const req = tx.objectStore(STORE).put(item);
+    req.onsuccess = ()=>resolve();
+    req.onerror = ()=>reject(req.error);
+  });
+}
+
+async function dbDelete(db,id){
+  return new Promise((resolve,reject)=>{
+    const tx = db.transaction(STORE,"readwrite");
+    const req = tx.objectStore(STORE).delete(id);
+    req.onsuccess = ()=>resolve();
+    req.onerror = ()=>reject(req.error);
+  });
+}
+
+async function dbClear(db){
+  return new Promise((resolve,reject)=>{
+    const tx = db.transaction(STORE,"readwrite");
+    const req = tx.objectStore(STORE).clear();
+    req.onsuccess = ()=>resolve();
+    req.onerror = ()=>reject(req.error);
+  });
+}
+
+const ACCOUNT_STORE_KEY = "portfolio_accounts";
+const OLD_ACCOUNT_DEFAULTS = {
+  account1: "以俄语留学生定位运营，产出过 800+ 点赞笔记，验证了“干货知识 + 审美内容”方向。",
+  account2: "测试多个内容方向，单条视频自然播放 3000+，并复盘出互动引导不足的问题。",
+  account3: "内容定位与视频形式持续测试中，积累了选题、拍摄、剪辑和用户反馈处理经验。"
+};
+function defaultAccounts(){
+  return [
+    {titleKey:"account_title_1", descKey:"account1", title:"水晶账号 01", desc:"以俄语留学生视角切入，定位“干货知识 + 审美内容”，产出过 800+ 点赞笔记，验证了用真实生活经验打动垂直人群的内容方向。"},
+    {titleKey:"account_title_2", descKey:"account2", title:"水晶账号 02", desc:"围绕真假鉴别、声音测试等实用选题持续测试，单条视频自然播放 3000+，并通过复盘发现互动引导不足，明确了下一次迭代重点。"},
+    {titleKey:"account_title_3", descKey:"account3", title:"英语教培账号", desc:"用同一套选题方法论做跨领域验证，积累了英语学习场景的选题、拍摄、剪辑和用户反馈处理经验，也更清楚不同人群的内容偏好。"}
+  ];
+}
+function loadAccounts(){
+  try{
+    const raw = localStorage.getItem(ACCOUNT_STORE_KEY);
+    if(raw !== null){
+      const arr = JSON.parse(raw);
+      if(Array.isArray(arr)) return arr;
+    }
+  }catch(e){}
+  return defaultAccounts();
+}
+function renderAccounts(){
+  const grid = document.getElementById("accountGrid");
+  if(!grid) return;
+  const items = loadAccounts();
+  grid.innerHTML = "";
+  items.forEach(item=>{
+    const card = document.createElement("div");
+    card.className = "account-item";
+    const h3 = document.createElement("h3");
+    h3.dataset.key = item.titleKey;
+    h3.textContent = item.title;
+    const p = document.createElement("p");
+    p.dataset.key = item.descKey;
+    p.textContent = item.desc;
+    const del = document.createElement("button");
+    del.className = "mini-btn danger";
+    del.type = "button";
+    del.textContent = "删除";
+    del.addEventListener("click",()=>deleteAccount(item.titleKey, item.descKey));
+    card.appendChild(h3);
+    card.appendChild(p);
+    card.appendChild(del);
+    grid.appendChild(card);
+  });
+  if(document.body.classList.contains("editing")){
+    grid.querySelectorAll("[data-key]").forEach(el=>{ el.contentEditable = "true"; });
+  }
+}
+function addAccount(){
+  const items = loadAccounts();
+  const suffix = "account_" + Date.now();
+  items.push({titleKey:suffix + "_title", descKey:suffix, title:"新账号", desc:"在这里补充账号定位、内容方向和测试结果。"});
+  localStorage.setItem(ACCOUNT_STORE_KEY, JSON.stringify(items));
+  renderAccounts();
+  loadText();
+}
+function deleteAccount(titleKey, descKey){
+  if(!confirm("确定删除这个案例吗？")) return;
+  const items = loadAccounts().filter(item=>item.titleKey !== titleKey);
+  localStorage.setItem(ACCOUNT_STORE_KEY, JSON.stringify(items));
+  if(titleKey) localStorage.removeItem("portfolio_text_" + titleKey);
+  if(descKey) localStorage.removeItem("portfolio_text_" + descKey);
+  renderAccounts();
+  loadText();
+}
+const DEFAULT_KOLS = [
+  ["@beccaxbloom","TikTok","Mega","4M","美国奢侈生活方式与珠宝堆叠，适合声量高峰"],
+  ["@taylortiminskas","TikTok","Macro","829K","美国时尚穿搭，饰品露出自然，互动率高"],
+  ["@CarlaRockmore","YouTube","Macro","508K","美国珠宝穿搭造型师，适合品牌背书"],
+  ["@emmakeitmann","TikTok","Macro","900K","法国时尚生活方式，自有珠宝品牌"],
+  ["@melissaswardrobe","Instagram","Macro","378K","英国时尚穿搭，受众广、调性高级"],
+  ["@caitlinelizaxo","TikTok","Mid","208K","美国时尚穿搭，适合中腰部投放"],
+  ["@ZachEmighJewelry","YouTube","Mid","349K","美国定制珠宝工艺师，专业背书强"],
+  ["@hbelllla","TikTok","Micro","67K","美国穿搭与饰品细节，互动率高"],
+  ["@gabriellaskory","Instagram","Micro","48.6K","美国生活方式与穿搭，视觉统一"],
+  ["@theylovequana_","Instagram","Nano","12K","美国生活方式创作者，亲和力强，适合冷启动"]
+];
+function renderKols(){
+  const body = document.getElementById("kolBody");
+  if(!body) return;
+  body.innerHTML = "";
+  DEFAULT_KOLS.forEach((row, i)=>{
+    const tr = document.createElement("tr");
+    const fields = ["name","platform","tier","followers","reason"];
+    row.forEach((value, j)=>{
+      const td = document.createElement("td");
+      td.dataset.key = "kolv2_" + (i + 1) + "_" + fields[j];
+      td.textContent = value;
+      tr.appendChild(td);
+    });
+    body.appendChild(tr);
+  });
+}
+function loadText(){
+  document.querySelectorAll("[data-key]").forEach(el=>{
+    const key = el.dataset.key;
+    const saved = localStorage.getItem("portfolio_text_" + key);
+    if(saved !== null && saved !== undefined && saved !== OLD_ACCOUNT_DEFAULTS[key]) el.innerHTML = saved;
+  });
+}
+
+function saveText(){
+  document.querySelectorAll("[data-key]").forEach(el=>{
+    localStorage.setItem("portfolio_text_" + el.dataset.key, el.innerHTML.trim());
+  });
+}
+
+function renderMedia(){
+  const grid = document.getElementById("mediaGrid");
+  grid.innerHTML = "";
+  const items = mediaItems.filter(i=>!i.kind || i.kind==="gallery").slice()
+    .sort((a,b)=>(a.order||0)-(b.order||0));
+  if(!items.length){
+    grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1">还没有作品，点击上方“上传作品”添加你的图片或视频。</div>';
+    return;
+  }
+  items.forEach(item=>{
+    const card = document.createElement("div");
+    card.className = "media-card";
+    const url = URL.createObjectURL(new Blob([item.blob],{type:item.type}));
+    const media = item.type.startsWith("video/")
+      ? `<video src="${url}" controls></video>`
+      : `<img src="${url}" alt="${escapeHtml(item.name)}">`;
+    card.innerHTML = `
+      ${media}
+      <div class="media-name">${escapeHtml(item.name)}</div>
+      <div class="media-controls">
+        <button class="mini-btn" data-act="up">上移</button>
+        <button class="mini-btn" data-act="down">下移</button>
+        <button class="mini-btn danger" data-act="del">删除</button>
+      </div>`;
+    card.querySelector('[data-act="up"]').onclick = ()=>moveItem(item.id,-1);
+    card.querySelector('[data-act="down"]').onclick = ()=>moveItem(item.id,1);
+    card.querySelector('[data-act="del"]').onclick = ()=>removeItem(item.id);
+    grid.appendChild(card);
+  });
+}
+
+function escapeHtml(str){
+  return String(str).replace(/[&<>"']/g,c=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  }[c]));
+}
+
+async function refreshMedia(){
+  const db = await openDB();
+  mediaItems = await dbAll(db);
+  renderMedia();
+  renderSpecials();
+}
+
+async function addFiles(files){
+  const db = await openDB();
+  let maxOrder = mediaItems.reduce((m,i)=>Math.max(m,i.order||0),0);
+  for(const file of files){
+    if(!file.type.startsWith("image/") && !file.type.startsWith("video/")) continue;
+    maxOrder += 1;
+    await dbAdd(db,{name:file.name,type:file.type,blob:file,order:maxOrder});
+  }
+  await refreshMedia();
+}
+
+async function addSpecialFile(file, kind){
+  const db = await openDB();
+  for(const item of mediaItems.filter(i=>i.kind===kind)){
+    await dbDelete(db,item.id);
+  }
+  await dbAdd(db,{name:file.name,type:file.type,blob:file,order:1,kind});
+  await refreshMedia();
+}
+
+async function deleteSpecial(kind){
+  if(!confirm("确定删除这个上传内容吗？")) return;
+  const db = await openDB();
+  for(const item of mediaItems.filter(i=>i.kind===kind)){
+    await dbDelete(db,item.id);
+  }
+  await refreshMedia();
+}
+
+function renderSpecialSlot(emptyId, mediaId, item, kind){
+  const empty = document.getElementById(emptyId);
+  const wrap = document.getElementById(mediaId);
+  const slot = wrap.parentElement;
+  if(!item){
+    empty.hidden = false;
+    wrap.hidden = true;
+    wrap.innerHTML = "";
+    if(slot) slot.classList.remove("is-wide");
+    return;
+  }
+  empty.hidden = true;
+  wrap.hidden = false;
+  const url = URL.createObjectURL(new Blob([item.blob],{type:item.type}));
+  const media = item.type.startsWith("video/")
+    ? `<video src="${url}" controls></video>`
+    : kind === "case_img"
+      ? `<a href="${url}" target="_blank" rel="noopener"><img src="${url}" alt="${escapeHtml(item.name)}"></a>`
+      : `<img src="${url}" alt="${escapeHtml(item.name)}">`;
+  wrap.innerHTML = `
+    ${media}
+    <div class="media-controls">
+      <button class="mini-btn" data-act="change">更换</button>
+      <button class="mini-btn danger" data-act="delete">删除</button>
+    </div>`;
+  if(slot) slot.classList.remove("is-wide");
+  if(kind === "case_img" && !item.type.startsWith("video/")){
+    const img = wrap.querySelector("img");
+    if(img){
+      img.addEventListener("load",()=>{
+        if(img.naturalWidth > img.naturalHeight * 2.2) slot.classList.add("is-wide");
+      });
+    }
+  }
+  wrap.querySelector('[data-act="change"]').onclick = ()=>{
+    const inputMap = {hero_bg:"heroBgInput", photo:"photoInput", case_img:"caseImgInput"};
+    const input = document.getElementById(inputMap[kind] || "photoInput");
+    input.value = "";
+    input.click();
+  };
+  wrap.querySelector('[data-act="delete"]').onclick = ()=>deleteSpecial(kind);
+}
+
+function renderHeroBg(item){
+  const heroBg = document.getElementById("heroBg");
+  const clearBtn = document.getElementById("heroBgClear");
+  if(!item){
+    heroBg.style.backgroundImage = "";
+    clearBtn.hidden = true;
+    return;
+  }
+  const url = URL.createObjectURL(new Blob([item.blob],{type:item.type}));
+  heroBg.style.backgroundImage = `linear-gradient(rgba(252,255,221,.82), rgba(252,255,221,.82)), url("${url}")`;
+  clearBtn.hidden = false;
+}
+
+function renderSpecials(){
+  const heroBg = mediaItems.find(i=>i.kind==="hero_bg");
+  const photo = mediaItems.find(i=>i.kind==="photo");
+  const caseImg = mediaItems.find(i=>i.kind==="case_img");
+  renderHeroBg(heroBg);
+  renderSpecialSlot("photoEmpty","photoMedia",photo,"photo");
+  renderSpecialSlot("caseImgEmpty","caseImgMedia",caseImg,"case_img");
+}
+
+async function removeItem(id){
+  if(!confirm("确定删除这条作品吗？")) return;
+  const db = await openDB();
+  await dbDelete(db,id);
+  await refreshMedia();
+}
+
+async function moveItem(id,dir){
+  const db = await openDB();
+  const items = mediaItems.slice().sort((a,b)=>(a.order||0)-(b.order||0));
+  const idx = items.findIndex(i=>i.id===id);
+  const target = idx + dir;
+  if(idx<0 || target<0 || target>=items.length) return;
+  const a = items[idx], b = items[target];
+  const tmp = a.order;
+  a.order = b.order;
+  b.order = tmp;
+  await dbPut(db,a);
+  await dbPut(db,b);
+  await refreshMedia();
+}
+
+function fileToDataURL(blob){
+  return new Promise((resolve,reject)=>{
+    const fr = new FileReader();
+    fr.onload = ()=>resolve(fr.result);
+    fr.onerror = ()=>reject(fr.error);
+    fr.readAsDataURL(blob);
+  });
+}
+
+async function exportData(){
+  const text = {};
+  document.querySelectorAll("[data-key]").forEach(el=>{
+    text[el.dataset.key] = el.innerHTML.trim();
+  });
+  const mediaPayload = [];
+  for(const item of mediaItems.slice().sort((a,b)=>(a.order||0)-(b.order||0))){
+    const dataUrl = await fileToDataURL(new Blob([item.blob],{type:item.type}));
+    mediaPayload.push({name:item.name,type:item.type,dataUrl,kind:item.kind||"gallery"});
+  }
+  const blob = new Blob([JSON.stringify({text,media:mediaPayload},null,2)],{type:"application/json"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "作品集备份.json";
+  a.click();
+}
+
+async function importData(file){
+  try{
+    const obj = JSON.parse(await file.text());
+    if(obj.text && typeof obj.text === "object"){
+      Object.entries(obj.text).forEach(([k,v])=>{
+        localStorage.setItem("portfolio_text_"+k, v);
+      });
+      loadText();
+    }
+    const db = await openDB();
+    await dbClear(db);
+    if(Array.isArray(obj.media)){
+      let order = 0;
+      for(const m of obj.media){
+        order += 1;
+        const res = await fetch(m.dataUrl);
+        const blob = await res.blob();
+        await dbAdd(db,{name:m.name,type:m.type,blob,order,kind:m.kind||"gallery"});
+      }
+    }
+    await refreshMedia();
+    alert("导入完成");
+  }catch(err){
+    alert("导入失败，请确认文件是作品集备份");
+  }
+}
+
+// edit mode
+let editing = false;
+const editBtn = document.getElementById("editBtn");
+editBtn.addEventListener("click",()=>{
+  editing = !editing;
+  document.body.classList.toggle("editing",editing);
+  document.querySelectorAll("[data-key]").forEach(el=>{
+    el.contentEditable = editing ? "true" : "false";
+  });
+  editBtn.textContent = editing ? "保存内容" : "编辑内容";
+  if(!editing) saveText();
+});
+
+// upload UI
+const uploadBtn = document.getElementById("uploadBtn");
+const uploadOverlay = document.getElementById("uploadOverlay");
+const fileInput = document.getElementById("fileInput");
+const panelDrop = document.getElementById("panelDropZone");
+const mainDrop = document.getElementById("dropZone");
+const cancelUpload = document.getElementById("cancelUpload");
+
+function openPicker(){
+  fileInput.value = "";
+  fileInput.click();
+}
+
+uploadBtn.addEventListener("click",()=>{
+  uploadOverlay.hidden = false;
+});
+cancelUpload.addEventListener("click",()=>{
+  uploadOverlay.hidden = true;
+});
+panelDrop.addEventListener("click",openPicker);
+mainDrop.addEventListener("click",openPicker);
+fileInput.addEventListener("change",()=>{
+  if(fileInput.files.length){
+    addFiles(fileInput.files);
+    uploadOverlay.hidden = true;
+  }
+});
+
+const heroBgInput = document.getElementById("heroBgInput");
+const photoInput = document.getElementById("photoInput");
+
+document.getElementById("heroBgBtn").addEventListener("click",()=>{
+  heroBgInput.value = "";
+  heroBgInput.click();
+});
+heroBgInput.addEventListener("change",e=>{
+  if(e.target.files[0]) addSpecialFile(e.target.files[0],"hero_bg");
+  e.target.value = "";
+});
+
+document.getElementById("heroBgClear").addEventListener("click",()=>deleteSpecial("hero_bg"));
+
+document.getElementById("photoEmpty").addEventListener("click",()=>{
+  photoInput.value = "";
+  photoInput.click();
+});
+photoInput.addEventListener("change",e=>{
+  if(e.target.files[0]) addSpecialFile(e.target.files[0],"photo");
+  e.target.value = "";
+});
+
+const caseImgInput = document.getElementById("caseImgInput");
+document.getElementById("caseImgEmpty").addEventListener("click",()=>{
+  caseImgInput.value = "";
+  caseImgInput.click();
+});
+caseImgInput.addEventListener("change",e=>{
+  if(e.target.files[0]) addSpecialFile(e.target.files[0],"case_img");
+  e.target.value = "";
+});
+
+[panelDrop, mainDrop].forEach(el=>{
+  el.addEventListener("dragover",e=>{
+    e.preventDefault();
+    el.style.borderColor = "var(--lime)";
+  });
+  el.addEventListener("dragleave",()=>{
+    el.style.borderColor = "";
+  });
+  el.addEventListener("drop",e=>{
+    e.preventDefault();
+    el.style.borderColor = "";
+    if(e.dataTransfer.files.length) addFiles(e.dataTransfer.files);
+    uploadOverlay.hidden = true;
+  });
+});
+
+document.getElementById("importInput").addEventListener("change",e=>{
+  if(e.target.files[0]) importData(e.target.files[0]);
+  e.target.value = "";
+});
+
+// a hidden import trigger in the footer for easier management
+const footer = document.querySelector("footer");
+const importLink = document.createElement("button");
+importLink.className = "mini-btn";
+importLink.style.marginTop = "10px";
+importLink.textContent = "导入备份";
+importLink.addEventListener("click",()=>document.getElementById("importInput").click());
+footer.appendChild(importLink);
+const exportLink = document.createElement("button");
+exportLink.className = "mini-btn";
+exportLink.style.marginLeft = "10px";
+exportLink.textContent = "导出备份";
+exportLink.addEventListener("click",()=>exportData());
+footer.appendChild(exportLink);
+
+renderAccounts();
+renderKols();
+loadText();
+refreshMedia();
+const addAccountBtn = document.getElementById("addAccountBtn");
+if(addAccountBtn) addAccountBtn.addEventListener("click", addAccount);
+const lightbox = document.getElementById("lightbox");
+const lightboxImg = document.getElementById("lightboxImg");
+function openLightbox(src){
+  if(!lightbox || !lightboxImg) return;
+  lightboxImg.src = src;
+  lightbox.hidden = false;
+  document.body.style.overflow = "hidden";
+}
+function closeLightbox(){
+  if(!lightbox) return;
+  lightbox.hidden = true;
+  lightboxImg.src = "";
+  document.body.style.overflow = "";
+}
+document.addEventListener("click",e=>{
+  const img = e.target.closest ? e.target.closest(".media-card img") : null;
+  if(img) openLightbox(img.currentSrc || img.src);
+});
+if(lightbox){
+  lightbox.addEventListener("click",e=>{
+    if(e.target === lightbox || e.target.closest("#lightboxClose")) closeLightbox();
+  });
+  document.addEventListener("keydown",e=>{
+    if(e.key === "Escape" && !lightbox.hidden) closeLightbox();
+  });
+}
+document.addEventListener("input",()=>{
+  if(!document.body.classList.contains("editing")) return;
+  const el = event.target && event.target.closest ? event.target.closest("[data-key]") : null;
+  if(el && el.dataset.key) localStorage.setItem("portfolio_text_" + el.dataset.key, el.innerHTML.trim());
+});
+</script>
+</body>
+</html>
